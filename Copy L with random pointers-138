@@ -1,0 +1,52 @@
+class Solution {
+private:
+    void insertT(Node* &head, Node* &tail, int val){
+        Node* temp2=new Node(val);
+        if(head == NULL){
+            head=temp2;
+            tail=temp2;
+        }else{
+            tail->next=temp2;
+            tail=tail->next;
+        }
+    }
+public:
+    Node* copyRandomList(Node* head) {
+        if(head== NULL) return head;
+        Node* cloneh= NULL;
+        Node* clonet= NULL;
+        Node* temp=head;
+        while(temp!=NULL){
+            insertT(cloneh, clonet, temp->val);
+            temp=temp->next;
+        }
+        Node* ONode=head;
+        Node* CNode= cloneh;
+        while(ONode!=NULL && CNode!=NULL){
+            Node* temp3=ONode->next;
+            ONode->next=CNode;
+            Node* temp4= CNode->next;
+            CNode->next=temp3;
+            ONode=temp3;
+            CNode=temp4;
+        }
+        Node* curr=head;
+        while(curr!=NULL){
+            if(curr->next!=NULL){
+                curr->next->random=curr->random ? curr->random->next : curr-> random;
+            }
+            curr=curr->next->next;
+        }
+        ONode=head;
+        CNode=cloneh;
+        while(ONode!=NULL && CNode!=NULL){
+            ONode->next=CNode->next;
+            ONode=ONode->next;
+            if(ONode!=NULL){
+                CNode->next=ONode->next;
+            }
+            CNode=CNode->next;
+        }
+        return cloneh;
+    }
+};
